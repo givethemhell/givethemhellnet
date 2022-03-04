@@ -65,7 +65,7 @@ namespace DB
                 ThreadPool.UnsafeQueueUserWorkItem((_) => Start(url, source.Token), false);
             }
 
-            Console.ReadKey();
+            while (true) { }
 
             source.Cancel();
 
