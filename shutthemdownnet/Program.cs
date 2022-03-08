@@ -19,7 +19,7 @@ namespace DB
 
             try
             {
-                targetsList = client.DownloadString("https://gist.githubusercontent.com/givethemhell/8885277d358bfea7bee6b60dbcb5086c/raw/0420c1b65a5a8cbdd74ecb42a4cb1b9bb2eef876/targets.txt");
+                targetsList = client.DownloadString("https://gist.githubusercontent.com/givethemhell/8885277d358bfea7bee6b60dbcb5086c/raw/");
             }
 
             catch (Exception ex)
@@ -32,7 +32,9 @@ namespace DB
 
             try
             {
-                targets = targetsList.Split("\n", StringSplitOptions.RemoveEmptyEntries).ToArray();
+                targets = targetsList.Split("\n", StringSplitOptions.RemoveEmptyEntries)
+                    .Distinct()
+                    .ToArray();
             }
 
             catch (Exception ex)
@@ -58,7 +60,7 @@ namespace DB
             TimeSpan.Zero,
             TimeSpan.FromSeconds(1));
 
-            var tasks = new List<Task>();
+            var task4s = new List<Task>();
 
             foreach (var url in targets)
             {
@@ -90,6 +92,7 @@ namespace DB
                 catch (Exception ex)
                 {
                     isDead = true;
+                    Thread.Sleep(TimeSpan.FromSeconds(5));
                 }
 
                 finally
